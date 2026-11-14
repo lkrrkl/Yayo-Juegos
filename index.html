@@ -36,7 +36,8 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    padding:clamp(64px, 9vh, 110px) clamp(16px, 4vw, 48px) clamp(48px, 8vh, 90px);
+    padding:clamp(64px, 9vh, 110px) clamp(14px, 4vw, 48px) clamp(48px, 8vh, 90px);
+    overflow-x:hidden;
   }
 
   /* ============ TORNILLOS ============ */
@@ -78,7 +79,7 @@
   /* ============ CABECERA ============ */
   .cabecera{
     text-align:center;
-    margin-bottom:clamp(40px, 6vh, 70px);
+    margin-bottom:clamp(36px, 6vh, 70px);
     position:relative;
     z-index:1;
   }
@@ -86,7 +87,7 @@
   .cabecera h1{
     font-family:'Orbitron', sans-serif;
     font-weight:900;
-    font-size:clamp(3rem, 12vw, 6.5rem);
+    font-size:clamp(2.7rem, 12vw, 6.5rem);
     line-height:.95;
     letter-spacing:.06em;
     background:linear-gradient(180deg, #ffffff 0%, #cfd4e6 45%, #7f879e 100%);
@@ -99,7 +100,7 @@
   .cabecera h2{
     font-family:'Orbitron', sans-serif;
     font-weight:700;
-    font-size:clamp(.85rem, 2.6vw, 1.15rem);
+    font-size:clamp(.8rem, 2.6vw, 1.15rem);
     letter-spacing:.55em;
     text-indent:.55em;
     text-transform:uppercase;
@@ -122,7 +123,8 @@
     width:100%;
     max-width:1040px;
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    /* min(100%, ...) evita desbordes en pantallas muy estrechas */
+    grid-template-columns:repeat(auto-fit, minmax(min(100%, 240px), 1fr));
     gap:clamp(20px, 3.2vw, 38px);
     justify-items:center;
     position:relative;
@@ -139,19 +141,19 @@
     position:relative;
     width:100%;
     max-width:340px;
-    aspect-ratio:1 / 1;
+    aspect-ratio:1 / 1;           /* SIEMPRE cuadrado */
 
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:clamp(10px, 2vw, 18px);
-    padding:clamp(18px, 3vw, 30px);
+    gap:clamp(8px, 2vw, 18px);
+    padding:clamp(14px, 3vw, 30px);
     text-align:center;
     text-decoration:none;
     overflow:hidden;
 
-    border-radius:clamp(18px, 3vw, 28px);
+    border-radius:clamp(16px, 3vw, 28px);
     border:2px solid rgba(255,255,255,.22);
 
     background:
@@ -174,11 +176,11 @@
   .boton:nth-child(2){ animation-delay:.15s; }
   .boton:nth-child(3){ animation-delay:.25s; }
 
-  .boton:hover,
+  /* Estados de foco (accesible en todos los dispositivos) */
   .boton:focus-visible{
+    outline:none;
     transform:translateY(-7px);
     filter:saturate(1.15) brightness(1.08);
-    outline:none;
     box-shadow:
       0 0 0 3px rgba(0,0,0,.5),
       0 15px 0 0 var(--cd),
@@ -189,7 +191,7 @@
   }
 
   .boton:active{
-    transform:translateY(4px);
+    transform:translateY(4px) scale(.99);
     box-shadow:
       0 0 0 3px rgba(0,0,0,.5),
       0 3px 0 0 var(--cd),
@@ -197,6 +199,22 @@
       0 0 30px var(--glow),
       inset 0 2px 0 rgba(255,255,255,.35),
       inset 0 -14px 26px rgba(0,0,0,.45);
+  }
+
+  /* Efectos hover solo en dispositivos con puntero real (evita "hover pegado" en móvil) */
+  @media (hover:hover){
+    .boton:hover{
+      transform:translateY(-7px);
+      filter:saturate(1.15) brightness(1.08);
+      box-shadow:
+        0 0 0 3px rgba(0,0,0,.5),
+        0 15px 0 0 var(--cd),
+        0 26px 46px rgba(0,0,0,.7),
+        0 0 70px var(--glow),
+        inset 0 2px 0 rgba(255,255,255,.55),
+        inset 0 -20px 34px rgba(0,0,0,.4);
+    }
+    .boton:hover::after{ left:135%; }
   }
 
   /* Destello que barre el botón */
@@ -212,7 +230,6 @@
     transition:left .65s ease;
     pointer-events:none;
   }
-  .boton:hover::after,
   .boton:focus-visible::after{ left:135%; }
 
   /* Borde interior luminoso */
@@ -227,7 +244,7 @@
   }
 
   .boton .icono{
-    font-size:clamp(2.2rem, 7vw, 3.4rem);
+    font-size:clamp(2rem, 7vw, 3.4rem);
     line-height:1;
     filter:drop-shadow(0 4px 10px rgba(0,0,0,.55));
     position:relative;
@@ -238,8 +255,8 @@
     position:relative;
     z-index:1;
     font-weight:700;
-    font-size:clamp(1rem, 2.5vw, 1.32rem);
-    line-height:1.25;
+    font-size:clamp(.95rem, 2.5vw, 1.32rem);
+    line-height:1.2;
     letter-spacing:.015em;
     color:#fff;
     text-shadow:
@@ -281,6 +298,27 @@
   @keyframes entrar{
     from{ opacity:0; transform:translateY(26px) scale(.96); }
     to  { opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  /* ============ MÓVIL: UNA COLUMNA A TODO EL ANCHO ============ */
+  @media (max-width:640px){
+    .juegos{
+      grid-template-columns:1fr;   /* una sola columna */
+      gap:22px;
+      width:100%;
+    }
+    .boton{
+      max-width:100%;              /* ocupa todo el ancho disponible */
+      width:100%;
+      aspect-ratio:1 / 1;          /* sigue siendo cuadrado */
+      border-radius:20px;
+    }
+  }
+
+  /* Pantallas muy estrechas: menos padding para que el cuadrado respire */
+  @media (max-width:380px){
+    body{ padding-left:12px; padding-right:12px; }
+    .boton{ padding:14px; border-radius:18px; }
   }
 
   @media (prefers-reduced-motion: reduce){
