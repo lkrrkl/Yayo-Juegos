@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>YAYO — Juegos</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ BASE ============ */
+  :root{
+    --metal-1:#4a4a54;
+    --metal-2:#2c2c34;
+    --metal-3:#1c1c22;
+    --texto:#eef0f6;
+    --muted:#a9adba;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html, body{ min-height:100%; }
+
+  body{
+    font-family:'Outfit', system-ui, -apple-system, sans-serif;
+    color:var(--texto);
+    background-color:var(--metal-2);
+    background-image:
+      radial-gradient(circle at 50% -10%, #5a5a66 0%, transparent 55%),
+      radial-gradient(circle at 50% 120%, #15151a 0%, transparent 60%),
+      repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0 2px, transparent 2px 5px),
+      linear-gradient(160deg, var(--metal-1), var(--metal-2) 55%, var(--metal-3));
+    background-attachment:fixed;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:clamp(64px, 9vh, 110px) clamp(16px, 4vw, 48px) clamp(48px, 8vh, 90px);
+  }
+
+  /* ============ TORNILLOS ============ */
+  .screw{
+    position:fixed;
+    width:clamp(20px, 2.4vw, 30px);
+    height:clamp(20px, 2.4vw, 30px);
+    border-radius:50%;
+    z-index:100;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at 32% 28%, #d6d6e0 0%, #9a9aa6 40%, #5c5c68 72%, #38383f 100%);
+    box-shadow:
+      inset 0 1px 2px rgba(255,255,255,.75),
+      inset 0 -2px 4px rgba(0,0,0,.65),
+      0 3px 7px rgba(0,0,0,.6),
+      0 0 0 3px rgba(0,0,0,.25);
+  }
+  .screw::before,
+  .screw::after{
+    content:"";
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    background:linear-gradient(#26262e, #14141a);
+    border-radius:2px;
+    box-shadow:
+      inset 0 1px 1px rgba(0,0,0,.9),
+      0 1px 0 rgba(255,255,255,.28);
+  }
+  .screw::before{ width:62%; height:16%; }
+  .screw::after{ width:16%; height:62%; }
+
+  .screw--tl{ top:clamp(12px,2vh,22px); left:clamp(12px,2vw,22px);  transform:rotate(12deg); }
+  .screw--tr{ top:clamp(12px,2vh,22px); right:clamp(12px,2vw,22px); transform:rotate(-24deg); }
+  .screw--bl{ bottom:clamp(12px,2vh,22px); left:clamp(12px,2vw,22px);  transform:rotate(38deg); }
+  .screw--br{ bottom:clamp(12px,2vh,22px); right:clamp(12px,2vw,22px); transform:rotate(-8deg); }
+
+  /* ============ CABECERA ============ */
+  .cabecera{
+    text-align:center;
+    margin-bottom:clamp(40px, 6vh, 70px);
+    position:relative;
+    z-index:1;
+  }
+
+  .cabecera h1{
+    font-family:'Orbitron', sans-serif;
+    font-weight:900;
+    font-size:clamp(3rem, 12vw, 6.5rem);
+    line-height:.95;
+    letter-spacing:.06em;
+    background:linear-gradient(180deg, #ffffff 0%, #cfd4e6 45%, #7f879e 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    filter:drop-shadow(0 0 18px rgba(140,170,255,.35)) drop-shadow(0 6px 0 rgba(0,0,0,.55));
+  }
+
+  .cabecera h2{
+    font-family:'Orbitron', sans-serif;
+    font-weight:700;
+    font-size:clamp(.85rem, 2.6vw, 1.15rem);
+    letter-spacing:.55em;
+    text-indent:.55em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:clamp(10px, 2vh, 18px);
+    text-shadow:0 1px 0 rgba(0,0,0,.6);
+  }
+
+  .cabecera .linea{
+    width:clamp(90px, 22vw, 180px);
+    height:3px;
+    margin:clamp(18px, 3vh, 28px) auto 0;
+    border-radius:99px;
+    background:linear-gradient(90deg, transparent, #8fa2ff, #61e8ff, #8fa2ff, transparent);
+    box-shadow:0 0 14px rgba(120,180,255,.8);
+  }
+
+  /* ============ REJILLA DE JUEGOS ============ */
+  .juegos{
+    width:100%;
+    max-width:1040px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:clamp(20px, 3.2vw, 38px);
+    justify-items:center;
+    position:relative;
+    z-index:1;
+  }
+
+  /* ============ BOTÓN ARCADE ============ */
+  .boton{
+    --c1:#7a5cff;
+    --c2:#3a1fa0;
+    --cd:#1d0f5c;
+    --glow:rgba(122,92,255,.55);
+
+    position:relative;
+    width:100%;
+    max-width:340px;
+    aspect-ratio:1 / 1;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(10px, 2vw, 18px);
+    padding:clamp(18px, 3vw, 30px);
+    text-align:center;
+    text-decoration:none;
+    overflow:hidden;
+
+    border-radius:clamp(18px, 3vw, 28px);
+    border:2px solid rgba(255,255,255,.22);
+
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,.28) 0%, transparent 58%),
+      linear-gradient(165deg, var(--c1) 0%, var(--c2) 100%);
+
+    box-shadow:
+      0 0 0 3px rgba(0,0,0,.5),
+      0 10px 0 0 var(--cd),
+      0 18px 34px rgba(0,0,0,.65),
+      0 0 38px var(--glow),
+      inset 0 2px 0 rgba(255,255,255,.45),
+      inset 0 -20px 34px rgba(0,0,0,.4);
+
+    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    animation:entrar .55s cubic-bezier(.2,.8,.3,1) both;
+  }
+
+  .boton:nth-child(1){ animation-delay:.05s; }
+  .boton:nth-child(2){ animation-delay:.15s; }
+  .boton:nth-child(3){ animation-delay:.25s; }
+
+  .boton:hover,
+  .boton:focus-visible{
+    transform:translateY(-7px);
+    filter:saturate(1.15) brightness(1.08);
+    outline:none;
+    box-shadow:
+      0 0 0 3px rgba(0,0,0,.5),
+      0 15px 0 0 var(--cd),
+      0 26px 46px rgba(0,0,0,.7),
+      0 0 70px var(--glow),
+      inset 0 2px 0 rgba(255,255,255,.55),
+      inset 0 -20px 34px rgba(0,0,0,.4);
+  }
+
+  .boton:active{
+    transform:translateY(4px);
+    box-shadow:
+      0 0 0 3px rgba(0,0,0,.5),
+      0 3px 0 0 var(--cd),
+      0 8px 18px rgba(0,0,0,.7),
+      0 0 30px var(--glow),
+      inset 0 2px 0 rgba(255,255,255,.35),
+      inset 0 -14px 26px rgba(0,0,0,.45);
+  }
+
+  /* Destello que barre el botón */
+  .boton::after{
+    content:"";
+    position:absolute;
+    top:-60%;
+    left:-90%;
+    width:55%;
+    height:220%;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
+    transform:rotate(22deg);
+    transition:left .65s ease;
+    pointer-events:none;
+  }
+  .boton:hover::after,
+  .boton:focus-visible::after{ left:135%; }
+
+  /* Borde interior luminoso */
+  .boton::before{
+    content:"";
+    position:absolute;
+    inset:8px;
+    border-radius:inherit;
+    border:1px solid rgba(255,255,255,.28);
+    box-shadow:inset 0 0 22px rgba(255,255,255,.18);
+    pointer-events:none;
+  }
+
+  .boton .icono{
+    font-size:clamp(2.2rem, 7vw, 3.4rem);
+    line-height:1;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,.55));
+    position:relative;
+    z-index:1;
+  }
+
+  .boton .nombre{
+    position:relative;
+    z-index:1;
+    font-weight:700;
+    font-size:clamp(1rem, 2.5vw, 1.32rem);
+    line-height:1.25;
+    letter-spacing:.015em;
+    color:#fff;
+    text-shadow:
+      0 2px 0 rgba(0,0,0,.45),
+      0 0 16px rgba(0,0,0,.35);
+  }
+
+  .boton .nombre small{
+    display:block;
+    margin-top:6px;
+    font-size:.76em;
+    font-weight:500;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.85);
+  }
+
+  /* ============ COLORES POR JUEGO ============ */
+  .boton--ciudad{
+    --c1:#7a5cff;
+    --c2:#351a95;
+    --cd:#1b0d55;
+    --glow:rgba(122,92,255,.6);
+  }
+  .boton--navidad{
+    --c1:#ff4d5e;
+    --c2:#9c0f2a;
+    --cd:#5c0619;
+    --glow:rgba(255,77,94,.55);
+  }
+  .boton--ventas{
+    --c1:#ffb02e;
+    --c2:#c25e00;
+    --cd:#7a3900;
+    --glow:rgba(255,176,46,.55);
+  }
+
+  /* ============ ANIMACIÓN DE ENTRADA ============ */
+  @keyframes entrar{
+    from{ opacity:0; transform:translateY(26px) scale(.96); }
+    to  { opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- Tornillos en las 4 esquinas -->
+  <span class="screw screw--tl" aria-hidden="true"></span>
+  <span class="screw screw--tr" aria-hidden="true"></span>
+  <span class="screw screw--bl" aria-hidden="true"></span>
+  <span class="screw screw--br" aria-hidden="true"></span>
+
+  <!-- Cabecera -->
+  <header class="cabecera">
+    <h1>YAYO</h1>
+    <h2>Juegos</h2>
+    <div class="linea"></div>
+  </header>
+
+  <!-- Botones -->
+  <main class="juegos">
+
+    <a class="boton boton--ciudad"
+       href="https://lkrrkl.github.io/Diorama-Ciudad/"
+       target="_blank" rel="noopener noreferrer">
+      <span class="icono">🌃</span>
+      <span class="nombre">
+        Constructor de Diorama
+        <small>Ciudad Nocturna</small>
+      </span>
+    </a>
+
+    <a class="boton boton--navidad"
+       href="https://lkrrkl.github.io/TiendaNavidad/"
+       target="_blank" rel="noopener noreferrer">
+      <span class="icono">🎄</span>
+      <span class="nombre">
+        Mi Tienda Navideña
+        <small>Navidad</small>
+      </span>
+    </a>
+
+    <a class="boton boton--ventas"
+       href="https://lkrrkl.github.io/Tienda-juego/"
+       target="_blank" rel="noopener noreferrer">
+      <span class="icono">🛒</span>
+      <span class="nombre">
+        Menú de Ventas
+        <small>Tienda</small>
+      </span>
+    </a>
+
+  </main>
+
+</body>
+</html>
