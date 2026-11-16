@@ -118,13 +118,13 @@
     box-shadow:0 0 14px rgba(120,180,255,.8);
   }
 
-  /* ============ REJILLA DE JUEGOS (ESCRITORIO) ============ */
+  /* ============ REJILLA DE JUEGOS (2 COLUMNAS) ============ */
   .juegos{
     width:100%;
-    max-width:1040px;
+    max-width:720px;                 /* más compacto para 2 columnas */
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-    gap:clamp(20px, 3.2vw, 38px);
+    grid-template-columns: repeat(2, 1fr);
+    gap:clamp(18px, 3vw, 32px);
     justify-items:center;
     position:relative;
     z-index:1;
@@ -139,20 +139,20 @@
 
     position:relative;
     width:100%;
-    max-width:340px;
+    max-width:320px;
     aspect-ratio:1 / 1;
 
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:clamp(8px, 2vw, 18px);
-    padding:clamp(14px, 3vw, 30px);
+    gap:clamp(8px, 2vw, 16px);
+    padding:clamp(12px, 2.8vw, 26px);
     text-align:center;
     text-decoration:none;
     overflow:hidden;
 
-    border-radius:clamp(16px, 3vw, 28px);
+    border-radius:clamp(16px, 3vw, 26px);
     border:2px solid rgba(255,255,255,.22);
 
     background:
@@ -240,7 +240,7 @@
   }
 
   .boton .icono{
-    font-size:clamp(2rem, 7vw, 3.4rem);
+    font-size:clamp(2rem, 6.5vw, 3.2rem);
     line-height:1;
     filter:drop-shadow(0 4px 10px rgba(0,0,0,.55));
     position:relative;
@@ -251,7 +251,7 @@
     position:relative;
     z-index:1;
     font-weight:700;
-    font-size:clamp(.95rem, 2.5vw, 1.32rem);
+    font-size:clamp(.9rem, 2.4vw, 1.25rem);
     line-height:1.2;
     letter-spacing:.015em;
     color:#fff;
@@ -262,7 +262,7 @@
 
   .boton .nombre small{
     display:block;
-    margin-top:6px;
+    margin-top:5px;
     font-size:.76em;
     font-weight:500;
     letter-spacing:.06em;
@@ -302,9 +302,7 @@
   }
 
   /* ======================================================
-     MÓVIL: TODO CABE EN PANTALLA, SIN SCROLL VERTICAL
-     Los botones se reparten el alto disponible y siguen
-     siendo cuadrados (aspect-ratio + altura del flex).
+     MÓVIL: 1 COLUMNA (para que no queden demasiado pequeños)
      ====================================================== */
   @media (max-width: 640px){
 
@@ -315,7 +313,6 @@
     }
 
     body{
-      /* dvh = altura real visible en móvil (sin barras del navegador) */
       height: 100vh;
       height: 100dvh;
       overflow: hidden;
@@ -344,6 +341,7 @@
       width: 100%;
       max-width: none;
       overflow: hidden;
+      grid-template-columns: none;   /* anula el grid de 2 columnas */
     }
 
     .boton{
@@ -394,13 +392,13 @@
     .screw--br{ bottom: 8px; right: 8px; }
   }
 
-  /* Pantallas muy pequeñas: afinar tipografía */
+  /* Pantallas muy pequeñas */
   @media (max-width: 380px){
     .boton .icono{ font-size: clamp(1.1rem, 4.5vw, 1.6rem); }
     .boton .nombre{ font-size: clamp(.7rem, 2.7vw, .9rem); }
   }
 
-  /* Landscape móvil: fila horizontal para que quepan sin scroll */
+  /* Landscape móvil: fila horizontal */
   @media (max-width: 900px) and (max-height: 500px) and (orientation: landscape){
     html, body{ height: 100%; overflow: hidden; }
     body{
@@ -414,6 +412,7 @@
     .juegos{
       flex-direction: row;
       gap: 8px;
+      grid-template-columns: none;
     }
     .boton{
       flex: 1 1 0;
