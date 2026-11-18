@@ -121,7 +121,7 @@
   /* ============ REJILLA DE JUEGOS (2 COLUMNAS) ============ */
   .juegos{
     width:100%;
-    max-width:720px;                 /* más compacto para 2 columnas */
+    max-width:720px;
     display:grid;
     grid-template-columns: repeat(2, 1fr);
     gap:clamp(18px, 3vw, 32px);
@@ -175,6 +175,7 @@
   .boton:nth-child(2){ animation-delay:.15s; }
   .boton:nth-child(3){ animation-delay:.25s; }
   .boton:nth-child(4){ animation-delay:.35s; }
+  .boton:nth-child(5){ animation-delay:.45s; }
 
   .boton:focus-visible{
     outline:none;
@@ -295,6 +296,12 @@
     --cd:#0a4f4a;
     --glow:rgba(45,212,191,.55);
   }
+  .boton--islamonedas{
+    --c1:#fbbf24;
+    --c2:#b45309;
+    --cd:#78350f;
+    --glow:rgba(251,191,36,.55);
+  }
 
   @keyframes entrar{
     from{ opacity:0; transform:translateY(26px) scale(.96); }
@@ -302,7 +309,7 @@
   }
 
   /* ======================================================
-     MÓVIL: 1 COLUMNA (para que no queden demasiado pequeños)
+     MÓVIL: 2 COLUMNAS (ajustadas a la pantalla, sin scroll)
      ====================================================== */
   @media (max-width: 640px){
 
@@ -324,7 +331,7 @@
 
     .cabecera{
       flex: 0 0 auto;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
     .cabecera h1{ font-size: clamp(1.5rem, 7.5vw, 2.2rem); line-height:.95; }
     .cabecera h2{ font-size: .6rem; letter-spacing: .35em; text-indent: .35em; margin-top: 3px; }
@@ -333,39 +340,35 @@
     .juegos{
       flex: 1 1 auto;
       min-height: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(6px, 1.2vh, 12px);
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(8px, 2vw, 14px);
       width: 100%;
       max-width: none;
       overflow: hidden;
-      grid-template-columns: none;   /* anula el grid de 2 columnas */
+      align-content: center;
+      justify-items: center;
     }
 
     .boton{
-      flex: 1 1 0;
-      min-height: 0;
-      min-width: 0;
-      width: auto;
+      width: 100%;
+      max-width: none;
       height: auto;
-      max-width: 100%;
-      max-height: 100%;
       aspect-ratio: 1 / 1;
-      margin: 0 auto;
+      min-height: 0;
+      margin: 0;
 
-      border-radius: clamp(14px, 4vw, 22px);
-      padding: clamp(10px, 3vw, 20px);
-      gap: clamp(4px, 1.5vw, 10px);
+      border-radius: clamp(12px, 3.5vw, 18px);
+      padding: clamp(8px, 2.5vw, 14px);
+      gap: clamp(3px, 1.2vw, 8px);
 
       box-shadow:
         0 0 0 2px rgba(0,0,0,.5),
-        0 6px 0 0 var(--cd),
-        0 12px 20px rgba(0,0,0,.6),
-        0 0 24px var(--glow),
+        0 5px 0 0 var(--cd),
+        0 10px 18px rgba(0,0,0,.6),
+        0 0 20px var(--glow),
         inset 0 2px 0 rgba(255,255,255,.45),
-        inset 0 -14px 24px rgba(0,0,0,.4);
+        inset 0 -12px 20px rgba(0,0,0,.4);
     }
 
     .boton:active{
@@ -374,53 +377,54 @@
         0 0 0 2px rgba(0,0,0,.5),
         0 2px 0 0 var(--cd),
         0 5px 12px rgba(0,0,0,.7),
-        0 0 20px var(--glow),
+        0 0 18px var(--glow),
         inset 0 2px 0 rgba(255,255,255,.35),
-        inset 0 -10px 20px rgba(0,0,0,.45);
+        inset 0 -8px 16px rgba(0,0,0,.45);
     }
 
-    .boton::before{ inset: 5px; }
+    .boton::before{ inset: 4px; }
 
-    .boton .icono{ font-size: clamp(1.3rem, 5vw, 2.2rem); }
-    .boton .nombre{ font-size: clamp(.75rem, 3vw, 1.05rem); line-height: 1.15; }
-    .boton .nombre small{ font-size: .72em; margin-top: 3px; letter-spacing: .04em; }
+    .boton .icono{ font-size: clamp(1.25rem, 5.5vw, 1.9rem); }
+    .boton .nombre{ font-size: clamp(.7rem, 2.8vw, .95rem); line-height: 1.15; }
+    .boton .nombre small{ font-size: .7em; margin-top: 2px; letter-spacing: .04em; }
 
-    .screw{ width: 22px; height: 22px; }
-    .screw--tl{ top: 8px; left: 8px; }
-    .screw--tr{ top: 8px; right: 8px; }
-    .screw--bl{ bottom: 8px; left: 8px; }
-    .screw--br{ bottom: 8px; right: 8px; }
+    .screw{ width: 20px; height: 20px; }
+    .screw--tl{ top: 6px; left: 6px; }
+    .screw--tr{ top: 6px; right: 6px; }
+    .screw--bl{ bottom: 6px; left: 6px; }
+    .screw--br{ bottom: 6px; right: 6px; }
   }
 
   /* Pantallas muy pequeñas */
   @media (max-width: 380px){
-    .boton .icono{ font-size: clamp(1.1rem, 4.5vw, 1.6rem); }
-    .boton .nombre{ font-size: clamp(.7rem, 2.7vw, .9rem); }
+    .boton .icono{ font-size: clamp(1.1rem, 5vw, 1.5rem); }
+    .boton .nombre{ font-size: clamp(.65rem, 2.6vw, .85rem); }
+    .juegos{ gap: 6px; }
   }
 
-  /* Landscape móvil: fila horizontal */
+  /* Landscape móvil: también 2 columnas */
   @media (max-width: 900px) and (max-height: 500px) and (orientation: landscape){
     html, body{ height: 100%; overflow: hidden; }
     body{
       height: 100dvh;
       padding: 6px;
     }
-    .cabecera h1{ font-size: 1.4rem; }
-    .cabecera h2{ font-size: .55rem; }
+    .cabecera h1{ font-size: 1.35rem; }
+    .cabecera h2{ font-size: .5rem; }
     .cabecera .linea{ display: none; }
-    .cabecera{ margin-bottom: 2px; }
+    .cabecera{ margin-bottom: 4px; }
     .juegos{
-      flex-direction: row;
-      gap: 8px;
-      grid-template-columns: none;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      align-content: center;
     }
     .boton{
-      flex: 1 1 0;
       aspect-ratio: 1 / 1;
-      width: auto;
-      height: 100%;
-      max-height: 100%;
+      padding: 6px;
+      gap: 2px;
     }
+    .boton .icono{ font-size: 1.1rem; }
+    .boton .nombre{ font-size: .65rem; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -481,6 +485,16 @@
       <span class="nombre">
         Creador de Interiores
         <small>Diseño de Casas</small>
+      </span>
+    </a>
+
+    <a class="boton boton--islamonedas"
+       href="https://lkrrkl.github.io/Isla-Monedas/"
+       target="_blank" rel="noopener noreferrer">
+      <span class="icono">🏝️</span>
+      <span class="nombre">
+        Isla Monedas
+        <small>Aventura de Dinero</small>
       </span>
     </a>
 
